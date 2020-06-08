@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html>
+<head>
+</head>
+<html xmlns="http://www.w3.org/1999/xhtml">
+<script src="https://code.jquery.com/jquery-1.11.2.min.js" integrity="sha256-Ls0pXSlb7AYs7evhd+VLnWsZ/AqEHcXBeMZUycz/CcA=" crossorigin="anonymous"></script>
+<style>
+    *{
+	margin: 0px;
+	padding: 0px;
+    }
+    body{
+	margin-top: 50px;
+    }
+    main{
+	width: 70%;
+        margin: 0 auto;
+    }
+    input{
+	width: 40%;
+	height: 26px;
+    }
+    button{
+	color: white;
+	background-color: #6793FF;
+	border: none;
+	text-decoration: none;
+	width: 17%;
+	height: 30px;
+	
+    }
+    button:hover{
+	background-color: #7AA0FF;
+    }
+#price{
+width: 30%;
+float:right;
+}
+    table {
+      font-family: arial, sans-serif;
+      border-collapse: collapse;
+      width: 100%;
+    }
+    
+    td, th {
+      border: 1px solid #dddddd;
+      text-align: left;
+      padding: 8px;
+    }
+    
+    tr:nth-child(even) {
+      background-color: #dddddd;
+    }
+    h1{
+	font-family: verdana;
+	text-align: center;
+    }
+    </style>
+<body>
+<main>
+<h1>Videoteka</h1>
+    <form id="cart" method="POST" action="#">
+        <input type="text" id="mname" name="mname" placeholder="Naziv filma" required>
+        <input id="mprice" name="mprice" type="number" placeholder="Cijena filma" required>
+        <button type="button" class="btn btn-primary" onclick="addMovie()">Dodaj Film</button>
+    </form>
+
+        <table class="table" id="movies">
+            <thead class="thead-dark">
+                <th scope="col">#</th>
+                <th scope="col">Naziv Filma</th>
+                <th scope="col">Cijena</th>
+            </thead>
+	    <tbody id="kosarica">
+
+	    </tbody>
+        </table>
+	<div id="price">
+        	Ukupno: <span id="total-value" name="total-value">0</span> HRK
+		<br/>
+        	<span style="color: red"> Popust: -<span id="discount" name="discount">0</span> HRK</span>
+		<br/><hr/>
+        	Za platiti: <span id="pay" name="pay">0</span> HRK
+	</div>
+</main>
+</body>
+</html>
+<script>
+        var cart = [];
+        $(function () {
+            if (localStorage.cart)
+            {
+                cart = JSON.parse(localStorage.cart);
+                showCart();
+            }
+        });
+
+        function addMovie() {
+            var price = $("#mprice").val();
+            var name = $("#mname").val();
+         
+
+            var item = { Product: name,  Price: price }; 
+            cart.push(item);
+            saveCart();
+            showCart();
+        }
+
+        function saveCart() {
+            if ( window.localStorage)
+            {
+                localStorage.cart = JSON.stringify(cart);
+            }
+        }
+
+        function showCart() {
+            if (cart.length == 0) {
+                $("#movies").css("visibility", "hidden");
+                return;
+            }
+	    var filmovi = [];
+            $("#movies").css("visibility", "visible");
+            $("#kosarica").empty();
+	    var totalPrice = 0;
+	    var count = 0;
+            for (var i in cart) {
+                var item = cart[i];
+		if(item.Price == '') item.Price = 0;
+                var row = "<tr><td>" + i + "</td><td>" + item.Product + "</td><td>" +
+                             item.Price + "</td></tr>";
+                $("#kosarica").append(row);
+		totalPrice += parseInt(item.Price);
+		document.getElementById("total-value").innerHTML = totalPrice;
+
+		filmovi.push(item.Product);		
+            }
+		var uniqueItems = Array.from(new Set(filmovi))
+		
+		if(uniqueItems.length > 2){
+			var discountF = totalPrice * 0.05
+			var discount = discountF.toFixed(2);
+		}
+		else{
+			var discount = 0
+		}
+		document.getElementById("discount").innerHTML = discount;
+		var Pay = totalPrice - discount;
+		document.getElementById("pay").innerHTML = Pay;
+
+        }
+</script>

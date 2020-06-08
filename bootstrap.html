@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Webshop</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+</head>
+<style>
+span{
+    display: none;
+}
+</style>
+<body>
+        <div class="container">
+            <div class="row row-cols-4">
+                <div class="col d-flex align-items-stretch">
+                    <div class="card" style="width: 18rem;">
+                        <img src="https://m.media-amazon.com/images/M/MV5BMDFkYTc0MGEtZmNhMC00ZDIzLWFmNTEtODM1ZmRlYWMwMWFmXkEyXkFqcGdeQXVyMTMxODk2OTU@._V1_.jpg" class="card-img-top" alt="Missing">
+                        <div class="card-body">
+                            <h5 class="card-title">The Shawshank Redemption</h5>
+                            <h5>20 KN</h5>
+                            <p class="card-text">Two imprisoned men bond over a number of years, finding solace and eventual redemption through acts of common decency.</p>
+                            <span class="mname">The Shawshank Redemption</span>
+                            <span class="mprice">20</span>
+                            <button type="button" class="btn btn-primary" onclick="addMovie(0)">Dodaj Film</button>
+                        </div>
+                    </div>
+                </div>
+                <div class="col d-flex align-items-stretch">
+                    <div class="card" style="width: 18rem;">
+                        <img src="https://m.media-amazon.com/images/M/MV5BM2MyNjYxNmUtYTAwNi00MTYxLWJmNWYtYzZlODY3ZTk3OTFlXkEyXkFqcGdeQXVyNzkwMjQ5NzM@._V1_SY1000_CR0,0,704,1000_AL_.jpg" class="card-img-top" alt="Missing">
+                        <div class="card-body">
+                            <h5 class="card-title">The Godfather</h5>
+                            <h5>30 KN</h5>
+                            <p class="card-text">The aging patriarch of an organized crime dynasty transfers control of his clandestine empire to his reluctant son.</p>
+                            <span class="mname">The Godfather</span>
+                            <span class="mprice">30</span>
+                            <button type="button" class="btn btn-primary" onclick="addMovie(1)">Dodaj Film</button>
+                        </div>
+                    </div>
+                </div>
+                <div class="col d-flex align-items-stretch">
+                    <div class="card" style="width: 18rem;">
+                        <img src="https://m.media-amazon.com/images/M/MV5BMWMwMGQzZTItY2JlNC00OWZiLWIyMDctNDk2ZDQ2YjRjMWQ0XkEyXkFqcGdeQXVyNzkwMjQ5NzM@._V1_SY1000_CR0,0,701,1000_AL_.jpg" class="card-img-top" alt="Missing">
+                        <div class="card-body">
+                            <h5 class="card-title">The Godfather: Part II</h5>
+                            <h5>40 KN</h5>
+                            <p class="card-text">The early life and career of Vito Corleone in 1920s New York City is portrayed, while his son, Michael, expands and tightens his grip on the family crime syndicate.</p>
+                            <span class="mname">The Godfather: Part II</span>
+                            <span class="mprice">40</span>
+                            <button type="button" class="btn btn-primary" onclick="addMovie(2)">Dodaj Film</button>
+                        </div>
+                    </div>
+                </div>
+                <div class="col d-flex align-items-stretch">
+                    <div class="card" style="width: 18rem;">
+                        <img src="https://m.media-amazon.com/images/M/MV5BMTMxNTMwODM0NF5BMl5BanBnXkFtZTcwODAyMTk2Mw@@._V1_SY1000_CR0,0,675,1000_AL_.jpg" class="card-img-top" alt="Missing">
+                        <div class="card-body">
+                            <h5 class="card-title">The Dark Knight</h5>
+                            <h5>50 KN</h5>
+                            <p class="card-text">When the menace known as the Joker wreaks havoc and chaos on the people of Gotham, Batman must accept one of the greatest psychological and physical tests of his ability to fight injustice.</p>
+                            <span class="mname">The Dark Knight</span>
+                            <span class="mprice">50</span>
+                            <button type="button" class="btn btn-primary" onclick="addMovie(3)">Dodaj Film</button>
+                        </div>
+                    </div>
+                    </div>
+            </div>
+        </div>
+    <form id="cart" method="POST" action="#">
+        <div class="container">
+            <table class="table" id="movies">
+                <thead class="thead-dark">
+                    <th scope="col">#</th>
+                    <th scope="col">Film</th>
+                    <th scope="col">Cijena</th>
+                    <th scope="col">Ukloni</th>
+                </thead>
+            </table>
+            Cijena: <div id="total-value" name="total-value">0</div>
+            Popust: <div id="discount" name="discount">0</div>
+	    Za platiti: <div id="pay" name="pay">0</div>
+            <button type="submit" class="btn btn-primary">Naruči</button>
+            <button type="button" class="btn btn-danger" onclick="ukloniSve()";>Isprazni košaricu</button>
+        </div>
+    </form>
+</body>
+</html>
+<script>
+function addMovie(i) {
+    var table = document.getElementById("movies");
+    var row = table.insertRow(+1);
+    var id = row.insertCell(0);
+    var film = row.insertCell(1);
+    var cijena = row.insertCell(2);
+    var del = row.insertCell(3);
+    id.innerHTML = '<b>' + (i + 1) + '</b>';
+    film.innerHTML = document.getElementsByClassName("mname")[i].innerHTML;
+    cijena.innerHTML = document.getElementsByClassName("mprice")[i].innerHTML;
+    del.innerHTML = '<button type="button" value="Delete" class="btn btn-danger" onclick="ukloni(this)">X</button>';
+    ItemSum(cijena.innerHTML);
+}
+function ukloniSve() {
+    var table = document.getElementById("movies");
+    var rows = table.rows.length;
+    for(var i = rows - 1; i > 0; i--)
+    {
+        table.deleteRow(i);
+        document.getElementById("total-value").innerHTML = 0;
+    }
+    var sum = 0;
+    Popust(sum);
+}
+function ukloni(a) {
+    var i = a.parentNode.parentNode.rowIndex;
+    document.getElementById("movies").deleteRow(i);
+    var mprice = a.parentNode.parentNode.getElementsByTagName("td")[2].innerHTML;
+    ItemSub(mprice);
+}
+function ItemSub(mprice) {
+    var a = parseInt(mprice);
+    var oldsum = document.getElementById("total-value").innerHTML;
+    var sum = oldsum*1 - a;
+    document.getElementById("total-value").innerHTML = sum;
+    Popust(sum);
+}
+function ItemSum(cijena) {
+    var a = parseInt(cijena);
+    var oldsum = document.getElementById("total-value").innerHTML;
+    var sum = oldsum*1 + a;
+    document.getElementById("total-value").innerHTML = sum;
+    Popust(sum);
+}
+function Popust(sum) {
+    var popust = sum * 0.05;
+    document.getElementById("discount").innerHTML = popust;
+
+    var final = sum * 0.95;
+    document.getElementById("pay").innerHTML = final;
+}
+</script>
